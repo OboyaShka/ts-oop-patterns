@@ -1,4 +1,10 @@
-export const conf = new Map();
+export const conf = new Map<ShapesUnion, new () => Shape>();
+export type ShapesUnion =
+    (new () => Shape)
+    | (new () => Rectangle)
+    | (new () => Circle)
+    | (new () => Square)
+    | (new () => AmazingCircle)
 
 abstract class Shape {
     draw(): void {
@@ -31,22 +37,22 @@ class Square extends Shape {
 conf.set(Square, Square);
 
 export class ShapeFactory {
-    create(type: new () => Shape): Shape {
-        if (!conf.has(type)) {
+    create(type: ShapesUnion): Shape {
+        const typeConstructor = conf.get(type);
+        if (!typeConstructor) {
             throw new Error("Invalid Object Type");
         }
-        const typeConstructor = conf.get(type);
         return new typeConstructor();
     }
 }
 
-class AmasingCircle extends Shape {
+class AmazingCircle extends Shape {
     draw(): void {
-        console.log("Внутри AmasingCircle.draw метод");
+        console.log("Внутри AmazingCircle.draw метод");
     }
 }
 
-conf.set(Circle, AmasingCircle);
+conf.set(Circle, AmazingCircle);
 
 const factory = new ShapeFactory();
 
