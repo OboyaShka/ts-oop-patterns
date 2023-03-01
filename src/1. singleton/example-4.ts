@@ -1,14 +1,14 @@
-let instanse
+let instance: { version: string };
 
 export default () => {
-    if (!instanse) {
-        console.log("Hello from example 4")
+    if (!instance) {
+        console.log('Hello from example 4');
 
-        instanse = {
-            version: "4"
+        instance = {
+            version: '4'
             // Логика
-        }
+        };
     }
 
-    return instanse
+    return instance;
 }

@@ -1,4 +1,4 @@
-import IoC from "../../ioc";
+import IoC from "../framework/ioc";
 
 export class ExampleService {
     constructor(ioc: IoC) {

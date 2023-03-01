@@ -27,48 +27,38 @@
 // register(serviceProvider) Конфигурация контейнера.
 // ServiceProvider место, где модуль будет регистрировать зависимости в контейнер
 
-import IoC from "./ioc";
-import ExampleServiceProvider from "./module/example/example.service-provider";
-import { APP_CONFIG_TOKEN, APP_TITLE_TOKEN, ROUTERS_TOKENS } from "./module/example/contracts";
-import { ExampleService } from "./module/example/example.service";
+import IoC from './module/framework/ioc';
+import { APP_CONFIG_TOKEN, APP_TITLE_TOKEN, ROUTERS_TOKENS } from './module/example/contracts';
+import { ExampleService } from './module/example/example.service';
+import { appConfig, Path } from './module/core/interfaces';
+import { App } from './module/framework/app';
 
-export interface ServiceProvider {
-    register(ioc: IoC): void
-}
+export const lesson6 = () => {
+    /* Test IoC container */
+    const ioc = new IoC();
 
-export interface GlobalConfig extends ProvidersConfig {
-    foo: string
-    appTitle?: string
-}
-
-export interface ProvidersConfig {
-    providers?: ServiceProvider[]
-}
-
-export const appConfig: GlobalConfig = {
-    providers: [
-        ExampleServiceProvider
-    ],
-    foo: 'FOO',
-}
-
-const ioc = new IoC()
-
-if (appConfig.providers) {
-    for (let serviceProvider of appConfig.providers) {
-        serviceProvider.register(ioc)
+    if (appConfig.providers) {
+        for (let serviceProvider of appConfig.providers) {
+            serviceProvider.register(ioc);
+        }
     }
-}
 
-const appTitle = ioc.use(APP_TITLE_TOKEN)
-console.log(appTitle)
+    const appTitle = ioc.use(APP_TITLE_TOKEN);
+    console.log(appTitle);
 
-const config = ioc.use(APP_CONFIG_TOKEN)
-console.log(config)
+    const config = ioc.use(APP_CONFIG_TOKEN);
+    console.log(config);
 
-const exampleService = ioc.use(ExampleService)
-exampleService.run()
+    const exampleService = ioc.use<ExampleService>(ExampleService);
+    exampleService.run();
 
-const routes = ioc.use(ROUTERS_TOKENS)
-console.log(routes)
-routes.forEach(route => console.log(route.path, route.title))
+    const routes = ioc.use<Path[]>(ROUTERS_TOKENS);
+    console.log(routes);
+    routes.forEach(route => console.log(route.path, route.title));
+
+    /* Test Service Contract */
+
+    const app = new App();
+    const appIoC = app.run();
+};
+

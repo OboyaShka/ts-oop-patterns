@@ -1,19 +1,21 @@
 function Singleton() {
-    console.log("Hello from example 2")
+    console.log('Hello from example 2');
 }
 
-Singleton.prototype.foo = function () {
+Singleton.prototype.foo = function() {
     // Логика
-}
+};
 
-Singleton.instance = null
+// @ts-ignore
+Singleton.instance = null;
 
-Singleton.getInstance = function () {
+Singleton.getInstance = function() {
     if (!Singleton.instance) {
-        Singleton.instance = new Singleton()
+        // @ts-ignore
+        Singleton.instance = new Singleton();
     }
 
-    return Singleton.instance
-}
+    return Singleton.instance;
+};
 
-export const getInstance = Singleton.getInstance
+export const getInstance = Singleton.getInstance;
